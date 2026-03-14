@@ -1,11 +1,27 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/bd');
 
-const ventaSchema = new mongoose.Schema({
-  factura: String,
-  monto: Number,
-  metodoPago: { type: String, enum: ['Efectivo', 'Tarjeta', 'QR'] },
-  caja: { type: String, enum: ['Principal', 'Menos'], default: 'Principal' },
-  fecha: { type: Date, default: Date.now }
+const Venta = sequelize.define('Venta', {
+  factura: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  monto: {
+    type: DataTypes.FLOAT,
+    allowNull: false
+  },
+  metodoPago: {
+    type: DataTypes.ENUM('Efectivo', 'Tarjeta', 'QR'),
+    allowNull: false
+  },
+  caja: {
+    type: DataTypes.ENUM('Principal', 'Menos'),
+    allowNull: true
+  },
+  fecha: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
+  }
 });
 
-module.exports = mongoose.model('Venta', ventaSchema);
+module.exports = Venta;
